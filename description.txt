@@ -1,0 +1,4 @@
+List problem hosts or services from the logs to who problem
+hotspots that should be dealt with.
+
+Url: hotspot.cgi

@@ -1,0 +1,15 @@
+##########################################################
+
+=head2 add_routes
+
+page: /thruk/cgi-bin/hotspot.cgi
+
+=cut
+
+$routes->{'/thruk/cgi-bin/hotspot.cgi'} = 'Thruk::Controller::hotspot::index';
+
+# add new menu item
+Thruk::Utils::Menu::insert_item('Reports', {
+                                'href'  => '/thruk/cgi-bin/hotspot.cgi',
+                                'name'  => 'Problem Hotspots',
+});

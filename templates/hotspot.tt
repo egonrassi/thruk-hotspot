@@ -1,0 +1,101 @@
+﻿[% USE date %]
+[% PROCESS _header.tt %]
+
+[% link = '' %]
+[% IF service    != '' %][% link = link _ '&amp;' _ 'service='    _ service    %][% END %]
+[% IF host       != '' %][% link = link _ '&amp;' _ 'host='       _ host       %][% END %]
+[% IF type       != '' %][% link = link _ '&amp;' _ 'type='       _ type       %][% END %]
+[% IF statetype  != '' %][% link = link _ '&amp;' _ 'statetype='  _ statetype  %][% END %]
+
+    <form method="get" action="hotspot.cgi" id="date_form">
+    <input type="hidden" name="entries" value="[% entries_per_page %]">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoboxrow">
+      <tr>
+        <td align="left" valign="top" width="33%">
+          [% PROCESS _infobox.tt %]
+        </td>
+        <td align="center" valign="top" width="33%">
+          <div align="center" class='dataTitle'>
+            [% IF service != '' and host != 'all' %]
+            Service '[% service %]' On Host '[% host %]'
+            [% ELSIF host != 'all' %]
+            Host '[% host %]'
+            [% ELSE %]
+            Problem Hotspots for All Hosts and Services
+            [% END %]
+          </div><br>
+          <table border="0" cellspacing="0" cellpadding="0" class='navBox'>
+            <tr>
+              <td align="center" valign="middle" class='navBoxItem' width="75">
+                Previous Day<br>
+                <img style="cursor: pointer;" src='[% url_prefix %]themes/[% theme %]/images/left.gif' alt='Previous Day' title='Previous Day' onclick="document.getElementById('archive').value='-1'; document.getElementById('date_form').submit();">
+              </td>
+              <td width="15"></td>
+              <td align="center" class='navBoxDate' nowrap>
+                [% PROCESS _log_date_select.tt %]
+              </td>
+              <td valign="middle">
+                &nbsp;&nbsp;<input type='submit' value='Update'>
+                <input type="hidden" name="archive" value="" id="archive">
+              </td>
+              <td align="center" valign="middle" class='navBoxItem' width="75">
+                [% IF end < date.now %]
+                Next Day<br>
+                <img style="cursor: pointer;" src='[% url_prefix %]themes/[% theme %]/images/right.gif' alt='Next Day' title='Next Day' onclick="document.getElementById('archive').value='+1'; document.getElementById('date_form').submit();">
+                [% END %]
+              </td>
+            </tr>
+          </table>
+        </td>
+
+        <td align="right" valign="top" width="33%">
+              [% IF host    %]<input type='hidden' name='host'    value='[% host    %]'>[% END %]
+              [% IF service %]<input type='hidden' name='service' value='[% service %]'>[% END %]
+            <table border="0" class='optBox'>
+              <tr>
+                <td align="left" class='optBoxItem'>State type options:</td>
+              </tr>
+              <tr>
+                <td align="left" class='optBoxItem'>
+                  <select name='statetype'>
+                    <option value="0"[% IF statetype == 0 %] selected[% END %]>All state types</option>
+                    <option value="1"[% IF statetype == 1 %] selected[% END %]>Soft states</option>
+                    <option value="2"[% IF statetype == 2 %] selected[% END %]>Hard states</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" class='optBoxItem'>History detail level for all hosts:</td>
+              </tr>
+              <tr>
+                <td align="left" class='optBoxItem'>
+                  <select name='type'>
+                    <option value="0"[% IF   type ==   0 %] selected[% END %]>All alerts</option>
+                    <option value="1"[% IF   type ==   1 %] selected[% END %]>All service alerts</option>
+                    <option value="2"[% IF   type ==   2 %] selected[% END %]>All host alerts</option>
+                    <option value="4"[% IF   type ==   4 %] selected[% END %]>Service warning</option>
+                    <option value="8"[% IF   type ==   8 %] selected[% END %]>Service unknown</option>
+                    <option value="16"[% IF  type ==  16 %] selected[% END %]>Service critical</option>
+                    <option value="32"[% IF  type ==  32 %] selected[% END %]>Service recovery</option>
+                    <option value="64"[% IF  type ==  64 %] selected[% END %]>Host down</option>
+                    <option value="128"[% IF type == 128 %] selected[% END %]>Host unreachable</option>
+                    <option value="256"[% IF type == 256 %] selected[% END %]>Host recovery</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" class='optBoxItem'><input type='submit' value='Update'></td>
+              </tr>
+              <tr>
+                <td align="right"></td>
+              </tr>
+            </table>
+          [% PROCESS _help.tt topic = "hotspot" %]
+        </td>
+      </tr>
+    </table>
+    </form>
+
+[% hotspotlogs %]
+
+[% PROCESS _footer.tt %]
